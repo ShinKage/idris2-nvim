@@ -1,0 +1,180 @@
+*idris2-nvim.txt*   Last change 2021 November 16
+*idris2.nvim*       Author: ShinKage
+                  Repository: https://github.com/ShinKage/idris2-nvim
+
+===============================================================================
+CONTENTS                                                     *idris-vim-contents*
+
+  1. Introduction:                               |idris2-nvim-introduction|
+  2. Requirements:                               |idris2-nvim-requirements|
+  3. Features:                                   |idris2-nvim-features|
+  4. Quickstart:                                 |idris2-nvim-quickstart|
+  5. Configuration:                              |idris2-nvim-configuration|
+  6. API:                                        |idris2-nvim-api|
+
+===============================================================================
+INTRODUCTION                                           *idris2-nvim-introduction*
+
+This is a plugin for detection and basic syntax for the Idris2 programming
+language. It also provides configuration and improved UI/UX over the Idris2 LSP
+Server (idris2-lsp).
+
+===============================================================================
+REQUIREMENTS                                           *idris2-nvim-requirements*
+
+  * Idris2 (https://github.com/idris-lang/Idris2)
+  * Idris2 LSP Server (https://github.com/idris-community/idris2-lsp)
+  * nvim-lspconfig (https://github.com/neovim/nvim-lspconfig)
+
+  OPTIONAL:
+
+    * nui.nvim (https://github.com/MunifTanjim/nui.nvim) for UI extensions
+
+===============================================================================
+FEATURES                                                   *idris2-nvim-features*
+
+  * Syntax Highlighting
+  * Indentation
+  * Easy LSP configuration
+  * Semantic Highlighting
+  * Persistent hovers for LSP
+  * Functions for single interactive commands
+  * Interactive UI for idris2 specific commands
+
+===============================================================================
+QUICKSTART                                               *idris2-nvim-quickstart*
+
+Install the prerequisites and the plugin with your preferred method.
+
+NOTE1: Jump to... functionalities require source to be available when
+installing pacakages, refer to
+(https://github.com/idris-community/idris2-lsp#go-to-commands-and-package-dependencies)
+on how to correctly install compiler libraries and third-party packages.
+
+Put the following line in your `init.lua` or any sourced lua file: >
+
+  require('idris2').setup({})
+<
+This should be sufficient for syntax, semantic highlighting and LSP. For more
+configuration options look at |idris2-nvim-configuration|.
+
+===============================================================================
+CONFIGURATION                                         *idris2-nvim-configuration*
+
+`idris2-nvim` provides the following configuration variables, presented as the
+table expected by the `setup` function, with the default values: >
+
+  {
+    client = {
+      hover = {
+        use_split = false, -- Persistent split instead of popups for hover
+      },
+    },
+    server = {}, -- Options passed to lspconfig idris2 configuration
+    hover_split_position = 'bottom', -- bottom, top, left or right
+    autostart_semantic = true, -- Should start and refresh semantic highlight automatically
+  }
+<
+===============================================================================
+API                                                             *idris2-nvim-api*
+
+Lua module: idris2                                                     *idris2*
+
+setup({opts})                                                  *idris2.setup()*
+`setup` starts the Idris2 LSP server with the provided configuration and saves
+the other provided options. Refer to |idris2-nvim-configuration| for the list
+of configurable options.
+
+show_implicits()                                      *idris2.show_implicits()*
+`show_implicits` asks the Idris2 LSP Server to show implicits in hovers.
+
+hide_implicits()                                      *idris2.hide_implicits()*
+`show_implicits` asks the Idris2 LSP Server to hide implicits in hovers.
+
+full_namespace()                                      *idris2.full_namespace()*
+`show_implicits` asks the Idris2 LSP Server to show the full namespace of names
+in hovers.
+
+hide_namespace()                                      *idris2.hide_namespace()*
+`show_implicits` asks the Idris2 LSP Server to hide the full namespace of names
+in hovers.
+
+===============================================================================
+Lua module: idris2.semantic                                     *idris2.semantic*
+
+request()                                           *idris2.semantic.request()*
+`request` asks the Idris2 LSP Server for the semantic highlighting ranges for
+the current buffer.
+
+clear()                                               *idris2.semantic.clear()*
+`clear` clears the current buffer from semantic highlight ranges.
+
+start()                                               *idris2.semantic.start()*
+`start` enables automatic refresh of semantic highlight ranges and sends a
+request if the buffer is not already highlighted.
+
+stop()                                                 *idris2.semantic.stop()*
+`stop` disables automatic refresh of semantic highlight ranges and clears the
+current buffer if highlighted.
+
+===============================================================================
+Lua module: idris2.metavars                                     *idris2.metavars*
+
+request_all({opts})                             *idris2.metavars.request_all()*
+`request_all` sends a request for a `metavars` command to the Idris2 LSP
+server. The default options are: >
+  {
+    popup = false, -- Closes the menu when out of focus
+  }
+
+===============================================================================
+Lua module: idris2.hover                                           *idris2.hover*
+
+open_split()                                        *idris2.hover.open_split()*
+`open_split` changes the default handler for LSP hover actions. The output is
+printed in a persistent syntax highlighted buffer.
+
+close_split()                                      *idris2.hover.close_split()*
+`close_split` restores the default handler for LSP hover actions.
+
+===============================================================================
+Lua module: idris2.code_action                               *idris2.code_action*
+
+request_single({filter})                  *idris2.code_action.request_single()*
+`request_single` is the handler for a single Idris2 LSP Server code action,
+matched by the provided filter.
+
+case_split()                                  *idris2.code_action.case_split()*
+`case_split` requests only a Case Split action from the Idris2 LSP Server.
+Does not ask for confirmation before applying changes.
+
+make_case()                                    *idris2.code_action.make_case()*
+`make_case` requests only a Make Case action from the Idris2 LSP Server.
+Does not ask for confirmation before applying changes.
+
+make_with()                                    *idris2.code_action.make_with()*
+`make_with` requests only a Make With action from the Idris2 LSP Server.
+Does not ask for confirmation before applying changes.
+
+make_lemma()                                  *idris2.code_action.make_lemma()*
+`make_lemma` requests only a Make Lemma action from the Idris2 LSP Server.
+Does not ask for confirmation before applying changes.
+
+add_clause()                                  *idris2.code_action.add_clause()*
+`add_clause` requests only a Add Clause action from the Idris2 LSP Server.
+Does not ask for confirmation before applying changes.
+
+expr_search()                                *idris2.code_action.expr_search()*
+`expr_search` requests only a Expression Search action from the Idris2 LSP
+Server. Can have multiple results, always ask for confirmation.
+
+generate_def()                              *idris2.code_action.generate_def()*
+`generate_def` requests only a Generate Definition action from the Idris2 LSP
+Server. Can have multiple results, always ask for confirmation.
+
+refine_hole()                                *idris2.code_action.refine_hole()*
+`refine_hole` requests only a Refine Hole action from the Idris2 LSP Server.
+Can have multiple results, always ask for confirmation.
+
+===============================================================================
+ vim:tw=79:ft=help:et:ts=2:sw=2:sts=2:norl:
