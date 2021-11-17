@@ -22,6 +22,7 @@ Using `vim-plug`:
 ```vim
 Plug 'neovim/nvim-lspconfig'
 Plug 'MunifTanjim/nui.nvim'
+Plug 'ShinKage/idris2-nvim'
 ```
 
 # Configuration
@@ -58,19 +59,67 @@ vim.cmd [[highlight link LspSemantic_type Include]] -- Use the same highlight as
 vim.cmd [[highlight LspSemantic_variable guifg=Gray]] -- Use gray as highlight colour
 ```
 
-The list of highlight group is the following:
-- `LspSemantic_variable`: Bound variables
-- `LspSemantic_enumMember`: Data constructors
-- `LspSemantic_function`: Function names
-- `LspSemantic_type`: Type constructors
-- `LspSemantic_keyword`: Keywords
-- `LspSemantic_namespace`: Explicit namespaces
-- `LspSemantic_postulate`: Postulates (`believe_me`, `assert_total`, ...)
-- `LspSemantic_module`: Imported modules
+|Group name              |Description                                   |
+|------------------------|----------------------------------------------|
+|`LspSemantic_variable`  |Bound variables                               |
+|`LspSemantic_enumMember`|Data constructors                             |
+|`LspSemantic_function`  |Function names                                |
+|`LspSemantic_type`      |Type constructors                             |
+|`LspSemantic_keyword`   |Keywords                                      |
+|`LspSemantic_namespace` |Explicit namespaces                           |
+|`LspSemantic_postulate` |Postulates (`believe_me`, `assert_total`, ...)|
+|`LspSemantic_module`    |Imported modules                              |
+
+## API
+
+Each module provides lua functions that can be mapped to any key you like. More comprehensive documentation on the API is available in the vim docs of the plugin.
+
+```lua
+vim.cmd [[nnoremap <Leader>cs <Cmd>lua require('idris2.code_action').case_split()<CR>]]
+```
+
+### `idris2` module
+|Function        |Description                   |
+|----------------|------------------------------|
+|`show_implicits`|Show implicits in hovers      |
+|`hide_implicits`|Hide implicits in hovers      |
+|`full_namespace`|Show full namespaces in hovers|
+|`hide_namespace`|Hide namespaces in hovers     |
+
+### `idris2.semantic` module
+|Function |Description                                            |
+|---------|-------------------------------------------------------|
+|`request`|Requests semantic groups                               |
+|`clear`  |Clear semantic groups                                  |
+|`start`  |Starts to automatically request semantic groups on save|
+|`stop`   |Stop automatic requests of semantic groups on save     |
+
+### `idris2.metavars` module
+|Function     |Description                                             |
+|-------------|--------------------------------------------------------|
+|`request_all`|Open a popup with all the metavars and jump on selection|
+
+### `idris2.hover` module
+|Function     |Description                             |
+|-------------|----------------------------------------|
+|`open_split` |Show hovers in a persistent split window|
+|`close_split`|Show hovers in the default popup        |
+
+### `idris2.code_action` module
+|Function      |Description                                                                      |
+|--------------|---------------------------------------------------------------------------------|
+|`case_split`  |Case splits a name on the LHS, applies with no confirmation                      |
+|`make_case`   |Replaces the metavar with a case block, applies with no confirmation             |
+|`make_with`   |Replaces the metavar with a with block, applies with no confirmation             |
+|`make_lemma`  |Replaces the metavar with a top-level lemma, applies with no confirmation        |
+|`add_clause`  |Add a clause for a declaration, applies with no confirmation                     |
+|`expr_search` |Tries to fill a metavar, produces multiple results                               |
+|`generate_def`|Tries to build a complete definition for a declaration, produces multiple results|
+|`refine_hole` |Tries to partially fill a metavar, produces multiple results                     |
 
 ## Demo
 
-Single code actions + split hover + show implicits toggle
+Single code actions | split hover | show implicits toggle
 
 ![opt2](https://user-images.githubusercontent.com/1173183/142092993-19b0e561-bdf6-449c-ba94-997ff1ef6678.gif)
 
