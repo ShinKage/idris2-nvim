@@ -53,7 +53,9 @@ require('idris2').setup(opts)
 ## Demo
 
 Single code actions + split hover + show implicits toggle
+
 ![opt2](https://user-images.githubusercontent.com/1173183/142092993-19b0e561-bdf6-449c-ba94-997ff1ef6678.gif)
 
 Metavars popup and jump
+
 ![opt](https://user-images.githubusercontent.com/1173183/142093232-317f3c61-4e0e-4747-b350-132cbf332258.gif)
