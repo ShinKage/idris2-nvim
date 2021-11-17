@@ -98,6 +98,8 @@ vim.cmd [[nnoremap <Leader>cs <Cmd>lua require('idris2.code_action').case_split(
 |Function     |Description                                             |
 |-------------|--------------------------------------------------------|
 |`request_all`|Open a popup with all the metavars and jump on selection|
+|`goto_next`  |Jumps to the next metavar in the buffer                 |
+|`goto_prev`  |Jumps to the previous metavar in the buffer             |
 
 ### `idris2.hover` module
 |Function     |Description                             |
