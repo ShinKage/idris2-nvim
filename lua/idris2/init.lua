@@ -48,10 +48,21 @@ end
 
 function M.setup(options)
   config.setup(options)
+
   setup_capabilities()
   setup_on_attach()
   setup_handlers()
   hover.setup()
+
+  vim.cmd [[highlight link LspSemantic_variable idrisString]]
+  vim.cmd [[highlight link LspSemantic_enumMember idrisStructure]]
+  vim.cmd [[highlight link LspSemantic_function idrisIdentifier]]
+  vim.cmd [[highlight link LspSemantic_type idrisType]]
+  vim.cmd [[highlight link LspSemantic_keyword idrisStatement]]
+  vim.cmd [[highlight link LspSemantic_namespace idrisImport]]
+  vim.cmd [[highlight link LspSemantic_postulate idrisStatement]]
+  vim.cmd [[highlight link LspSemantic_module idrisModule]]
+
   setup_lsp()
 end
 

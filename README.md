@@ -50,6 +50,24 @@ local opts = {
 require('idris2').setup(opts)
 ```
 
+### Semantic Highlighting
+The server uses the regular syntax highlight groups as defaults for semantic highlight groups. Some examples of custom configuration are:
+
+```lua
+vim.cmd [[highlight link LspSemantic_type Include]] -- Use the same highlight as the Include group
+vim.cmd [[highlight LspSemantic_variable guifg=Gray]] -- Use gray as highlight colour
+```
+
+The list of highlight group is the following:
+- `LspSemantic_variable`: Bound variables
+- `LspSemantic_enumMember`: Data constructors
+- `LspSemantic_function`: Function names
+- `LspSemantic_type`: Type constructors
+- `LspSemantic_keyword`: Keywords
+- `LspSemantic_namespace`: Explicit namespaces
+- `LspSemantic_postulate`: Postulates (`believe_me`, `assert_total`, ...)
+- `LspSemantic_module`: Imported modules
+
 ## Demo
 
 Single code actions + split hover + show implicits toggle
