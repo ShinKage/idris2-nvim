@@ -34,6 +34,8 @@ Put this in your init.lua or any lua file that is sourced. For most people, the 
 require('idris2').setup({})
 ```
 
+**NOTE: This is the only line of code necessary for setup, do not also add lines for `nvim-lspconfig` because the server setup is already handled by the plugin.**
+
 ## Configuration
 The options shown below are the defaults. You only need to pass the keys to the setup function that you want to be changed, because the defaults are applied for keys that are not provided. 
 
@@ -125,8 +127,12 @@ vim.cmd [[nnoremap <Leader>cs <Cmd>lua require('idris2.code_action').case_split(
 
 Single code actions | split hover | show implicits toggle
 
-![opt2](https://user-images.githubusercontent.com/1173183/142092993-19b0e561-bdf6-449c-ba94-997ff1ef6678.gif)
+![single](https://user-images.githubusercontent.com/1173183/142092993-19b0e561-bdf6-449c-ba94-997ff1ef6678.gif)
 
 Metavars popup and jump
 
-![opt](https://user-images.githubusercontent.com/1173183/142093232-317f3c61-4e0e-4747-b350-132cbf332258.gif)
+![metavars](https://user-images.githubusercontent.com/1173183/142093232-317f3c61-4e0e-4747-b350-132cbf332258.gif)
+
+Expression search without and with hints
+
+![hints](https://user-images.githubusercontent.com/1173183/142681254-2c31c9cd-b367-4669-8ded-91e51c7cba00.gif)
