@@ -108,16 +108,18 @@ vim.cmd [[nnoremap <Leader>cs <Cmd>lua require('idris2.code_action').case_split(
 |`close_split`|Show hovers in the default popup        |
 
 ### `idris2.code_action` module
-|Function      |Description                                                                      |
-|--------------|---------------------------------------------------------------------------------|
-|`case_split`  |Case splits a name on the LHS, applies with no confirmation                      |
-|`make_case`   |Replaces the metavar with a case block, applies with no confirmation             |
-|`make_with`   |Replaces the metavar with a with block, applies with no confirmation             |
-|`make_lemma`  |Replaces the metavar with a top-level lemma, applies with no confirmation        |
-|`add_clause`  |Add a clause for a declaration, applies with no confirmation                     |
-|`expr_search` |Tries to fill a metavar, produces multiple results                               |
-|`generate_def`|Tries to build a complete definition for a declaration, produces multiple results|
-|`refine_hole` |Tries to partially fill a metavar, produces multiple results                     |
+|Function           |Description                                                                       |
+|-------------------|----------------------------------------------------------------------------------|
+|`case_split`       |Case splits a name on the LHS, applies with no confirmation                       |
+|`make_case`        |Replaces the metavar with a case block, applies with no confirmation              |
+|`make_with`        |Replaces the metavar with a with block, applies with no confirmation              |
+|`make_lemma`       |Replaces the metavar with a top-level lemma, applies with no confirmation         |
+|`add_clause`       |Add a clause for a declaration, applies with no confirmation                      |
+|`expr_search`      |Tries to fill a metavar, produces multiple results                                |
+|`generate_def`     |Tries to build a complete definition for a declaration, produces multiple results |
+|`refine_hole`      |Tries to partially fill a metavar, produces multiple results                      |
+|`refine_hole_hints`|Same as `expr_search` but asks the user for comma-separated names to give as hints|
+|`expr_search_hints`|Same as `refine_hole` but asks the user for comma-separated names to give as hints
 
 ## Demo
 
