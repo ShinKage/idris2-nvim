@@ -7,7 +7,7 @@ endif
 setlocal shiftwidth=2
 setlocal tabstop=2
 if exists('g:idris2#allow_tabchar') && g:idris2#allow_tabchar != 0
-	setlocal noexpandtab
+  setlocal noexpandtab
 else
   setlocal expandtab
 endif
