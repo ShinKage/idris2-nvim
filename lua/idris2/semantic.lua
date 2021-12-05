@@ -2,14 +2,15 @@ local config = require('idris2.config')
 
 local M = {}
 
-function M.request()
+function M.request(bufnr)
+  local bufnr = bufnr or 0
   local text_params = vim.lsp.util.make_text_document_params()
-  vim.lsp.buf_request(0, 'textDocument/semanticTokens/full', { textDocument = text_params })
+  vim.lsp.buf_request(bufnr, 'textDocument/semanticTokens/full', { textDocument = text_params })
 end
 
 function M.refresh(err, result, ctx, cfg)
   if config.semantic_refresh then
-    M.request()
+    M.request(ctx.bufnr)
   end
   return vim.NIL
 end
