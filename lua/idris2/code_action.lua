@@ -21,7 +21,7 @@ local function has_multiple_results(filter)
 end
 
 local function single_action_handler(err, result, ctx, config)
-  if not result then
+  if not result or #result == 0 then
     vim.notify('No code actions available', vim.log.levels.INFO)
     return
   end
@@ -59,7 +59,7 @@ function M.generate_def() M.request_single(M.filters.GEN_DEF)     end
 function M.refine_hole()  M.request_single(M.filters.REF_HOLE)    end
 
 local function on_with_hints_results(err, results, ctx, config)
-  if not results then
+  if not results or #results == 0 then
     vim.notify('No code actions available', vim.log.levels.INFO)
     return
   end
