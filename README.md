@@ -44,6 +44,7 @@ local opts = {
   client = {
     hover = {
       use_split = false, -- Persistent split instead of popups for hover
+      with_history = false, -- Show history of hovers instead of only last
     },
   },
   server = {}, -- Options passed to lspconfig idris2 configuration
@@ -104,10 +105,10 @@ vim.cmd [[nnoremap <Leader>cs <Cmd>lua require('idris2.code_action').case_split(
 |`goto_prev`  |Jumps to the previous metavar in the buffer             |
 
 ### `idris2.hover` module
-|Function     |Description                             |
-|-------------|----------------------------------------|
-|`open_split` |Show hovers in a persistent split window|
-|`close_split`|Show hovers in the default popup        |
+|Function     |Description                                                    |
+|-------------|---------------------------------------------------------------|
+|`open_split` |Show hovers in a persistent split window, can show full history|
+|`close_split`|Show hovers in the default popup                               |
 
 ### `idris2.code_action` module
 |Function           |Description                                                                       |

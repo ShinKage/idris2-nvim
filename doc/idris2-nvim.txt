@@ -68,6 +68,7 @@ table expected by the `setup` function, with the default values: >
     client = {
       hover = {
         use_split = false, -- Persistent split instead of popups for hover
+        with_history = false, -- Show history of hovers instead of only last
       },
     },
     server = {}, -- Options passed to lspconfig idris2 configuration
@@ -138,9 +139,11 @@ back to the end if the cursor is before the first metavar.
 ===============================================================================
 Lua module: idris2.hover                                           *idris2.hover*
 
-open_split()                                        *idris2.hover.open_split()*
+open_split({history})                               *idris2.hover.open_split()*
 `open_split` changes the default handler for LSP hover actions. The output is
-printed in a persistent syntax highlighted buffer.
+printed in a persistent syntax highlighted buffer. If the `history` argument
+is set to `true`, then new hovers are appended with timestamp instead of
+replacing previous hovers.
 
 close_split()                                      *idris2.hover.close_split()*
 `close_split` restores the default handler for LSP hover actions.

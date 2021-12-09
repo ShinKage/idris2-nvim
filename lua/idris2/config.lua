@@ -5,6 +5,7 @@ local defaults = {
   client = {
     hover = {
       use_split = false,
+      with_history = false,
     },
   },
   -- opts for nvim-lspconfig
@@ -16,6 +17,7 @@ local defaults = {
 M.options = {}
 M.semantic_refresh = false
 M.split_open = false
+M.split_history = false
 
 function M.setup(options)
   M.options = vim.tbl_deep_extend('force', {}, defaults, options or {})

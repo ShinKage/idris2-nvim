@@ -7,12 +7,30 @@ local M = {}
 M.res_split = nil
 
 function M.handler(err, result, ctx, cfg)
+  if not result then
+    return
+  end
+
   if config.split_open then
     vim.api.nvim_buf_set_option(M.res_split.bufnr, 'modifiable', true)
-    local lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+    local prefixlines = {
+      '------------------------------',
+      '-- ' .. vim.fn.strftime('%c') .. ' --',
+      '------------------------------'
+    }
+    local lines = vim.split(result.contents.value, '\n')
     lines = vim.lsp.util.trim_empty_lines(lines)
-    lines = vim.lsp.util.stylize_markdown(M.res_split.bufnr, lines)
-    vim.api.nvim_buf_set_lines(M.res_split.bufnr, 0, -1, false, lines)
+    table.insert(lines, '')
+
+    if config.split_history then
+      vim.api.nvim_buf_set_lines(M.res_split.bufnr, -1, -1, false, prefixlines)
+      vim.api.nvim_buf_set_lines(M.res_split.bufnr, -1, -1, false, lines)
+      local count = vim.api.nvim_buf_line_count(M.res_split.bufnr)
+      vim.api.nvim_win_set_cursor(M.res_split.winid, {count, 0})
+    else
+      vim.api.nvim_buf_set_lines(M.res_split.bufnr, 0, -1, false, lines)
+    end
+
     vim.api.nvim_buf_set_option(M.res_split.bufnr, 'modifiable', false)
   else
     return vim.lsp.handlers.hover(err, result, ctx, cfg)
@@ -23,7 +41,7 @@ function M.setup()
   M.res_split = Split({
     relative = 'editor',
     position = config.options.hover_split_position,
-    size = '20%',
+    size = '30%',
     focusable = false,
     win_options = {
       foldenable = false,
@@ -43,7 +61,7 @@ function M.setup()
     },
   })
   M.res_split:mount()
-  vim.api.nvim_buf_set_name(M.res_split.bufnr, 'Idris2ResponseBuffer')
+  vim.api.nvim_buf_set_name(M.res_split.bufnr, 'Idris2 LSP Response Buffer')
   M.res_split:on({event.BufWinEnter, event.BufEnter}, function()
     if vim.fn.winnr('$') == 1 and vim.api.nvim_get_current_win() == M.res_split.winid then
       vim.cmd([[q]])
@@ -58,11 +76,12 @@ function M.setup()
   end
 end
 
-function M.open_split()
+function M.open_split(history)
   if config.split_open then
     return
   end
   config.split_open = true
+  config.split_history = history or config.options.client.hover.with_history
   local winnr = vim.api.nvim_get_current_win()
   M.res_split:show()
   vim.api.nvim_set_current_win(winnr)

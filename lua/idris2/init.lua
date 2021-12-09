@@ -28,6 +28,7 @@ local function setup_capabilities()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
 
   capabilities['workspace']['semanticTokens'] = { refreshSupport = true }
+  capabilities['textDocument']['hover']['contentFormat'] = {}
   lsp_opts.capabilities = vim.tbl_deep_extend('force', capabilities, lsp_opts.capabilities or {})
 end
 
