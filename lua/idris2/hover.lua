@@ -49,6 +49,10 @@ function M.setup()
       vim.cmd([[q]])
     end
   end)
+  M.res_split:on({event.BufHidden, event.WinClosed}, function()
+    config.split_open = false
+    M.res_split:hide()
+  end)
   if not config.split_open then
     M.res_split:hide()
   end
