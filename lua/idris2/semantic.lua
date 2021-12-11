@@ -22,6 +22,10 @@ function M.full(err, result, ctx, cfg)
   local token_types = legend.tokenTypes
   local data = result.data
 
+  if #data == 0 then
+    return
+  end
+
   local ns = vim.api.nvim_create_namespace('nvim-lsp-semantic-hl')
   vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
 
