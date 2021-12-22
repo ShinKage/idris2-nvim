@@ -149,6 +149,17 @@ close_split()                                      *idris2.hover.close_split()*
 `close_split` restores the default handler for LSP hover actions.
 
 ===============================================================================
+Lua module: idris2.browse                                         *idris2.browse*
+
+browse({opts})                                         *idris2.browse.browse()*
+`browse` sends a request for a list of names visible in a namespace to the
+Idris2 LSP server. Before the request asks the user, via an input popup,
+for the namespace. The default options are: >
+  {
+    popup = false, -- Closes the menu when out of focus
+  }
+
+===============================================================================
 Lua module: idris2.code_action                               *idris2.code_action*
 
 request_single({filter})                  *idris2.code_action.request_single()*

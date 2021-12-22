@@ -104,6 +104,11 @@ vim.cmd [[nnoremap <Leader>cs <Cmd>lua require('idris2.code_action').case_split(
 |`goto_next`  |Jumps to the next metavar in the buffer                 |
 |`goto_prev`  |Jumps to the previous metavar in the buffer             |
 
+### `idris2.browse` module
+|Function     |Description                                                                          |
+|-------------|-------------------------------------------------------------------------------------|
+|`browse`     |Asks the user for a namespace and returns the list of names visible in that namespace|
+
 ### `idris2.hover` module
 |Function     |Description                                                    |
 |-------------|---------------------------------------------------------------|
@@ -122,7 +127,7 @@ vim.cmd [[nnoremap <Leader>cs <Cmd>lua require('idris2.code_action').case_split(
 |`generate_def`     |Tries to build a complete definition for a declaration, produces multiple results |
 |`refine_hole`      |Tries to partially fill a metavar, produces multiple results                      |
 |`refine_hole_hints`|Same as `expr_search` but asks the user for comma-separated names to give as hints|
-|`expr_search_hints`|Same as `refine_hole` but asks the user for comma-separated names to give as hints
+|`expr_search_hints`|Same as `refine_hole` but asks the user for comma-separated names to give as hints|
 
 ## Demo
 
