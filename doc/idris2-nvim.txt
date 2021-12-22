@@ -132,7 +132,7 @@ goto_next()                                       *idris2.metavars.goto_next()*
 `goto_next` tries to jump to the next metavar in the current buffer, cycling
 back to the start if the cursor is after the last metavar.
 
-goto_prev()                                       *idris2.metavars.goto_next()*
+goto_prev()                                       *idris2.metavars.goto_prev()*
 `goto_next` tries to jump to the previous metavar in the current buffer, cycling
 back to the end if the cursor is before the first metavar.
 
