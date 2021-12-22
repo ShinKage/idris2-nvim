@@ -56,7 +56,8 @@ function M.menu_handler(ns, opts)
     end, result)
     local menu = Menu(popup_options, {
       lines = items,
-      max_width = 999,
+      max_width = 100,
+      max_height = 20,
       separator = {
         char = '-',
         text_align = 'right',
