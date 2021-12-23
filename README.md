@@ -54,6 +54,8 @@ local opts = {
 require('idris2').setup(opts)
 ```
 
+You can specify a setup function in your configuration at `server.on_attach` in order specify any vim key bindings or options you want to only be set when connected to the Idris LSP.
+
 ### Semantic Highlighting
 The server uses the regular syntax highlight groups as defaults for semantic highlight groups. Some examples of custom configuration are:
 
