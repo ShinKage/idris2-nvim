@@ -10,6 +10,7 @@ local defaults = {
   },
   -- opts for nvim-lspconfig
   server = {},
+  post_hooks = {},
   hover_split_position = 'bottom',
   autostart_semantic = true,
 }

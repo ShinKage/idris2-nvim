@@ -1,6 +1,8 @@
 local Input = require("nui.input")
 local event = require("nui.utils.autocmd").event
 
+local plugin_config = require('idris2.config')
+
 local M = {}
 
 M.filters = {
@@ -36,6 +38,16 @@ local function single_action_handler(err, result, ctx, config)
   if action.edit ~= nil then
     vim.lsp.util.apply_workspace_edit(action.edit)
   end
+
+  local params = ctx.params
+  if params ~= nil then
+    local filter = ctx.params.context.only[1]
+    local optional_post_hook = plugin_config.options.post_hooks[filter]
+    if optional_post_hook ~= nil then
+      optional_post_hook(err, result, ctx, config)
+    end
+  end
+
 end
 
 function M.request_single(filter)
