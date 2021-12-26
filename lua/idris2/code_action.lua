@@ -22,6 +22,13 @@ local function has_multiple_results(filter)
            or filter == M.filters.REF_HOLE
 end
 
+local function handle_code_action_post_hook(action)
+  local optional_post_hook = plugin_config.options.code_action_post_hook
+  if optional_post_hook ~= nil then
+    optional_post_hook(action)
+  end
+end
+
 local function single_action_handler(err, result, ctx, config)
   if not result or #result == 0 then
     vim.notify('No code actions available', vim.log.levels.INFO)
@@ -39,15 +46,7 @@ local function single_action_handler(err, result, ctx, config)
     vim.lsp.util.apply_workspace_edit(action.edit)
   end
 
-  local params = ctx.params
-  if params ~= nil then
-    local filter = ctx.params.context.only[1]
-    local optional_post_hook = plugin_config.options.post_hooks[filter]
-    if optional_post_hook ~= nil then
-      optional_post_hook(err, result, ctx, config)
-    end
-  end
-
+  handle_code_action_post_hook(action)
 end
 
 function M.request_single(filter)
@@ -81,6 +80,8 @@ local function on_with_hints_results(err, results, ctx, config)
       return
     end
     vim.lsp.util.apply_workspace_edit(action.edit)
+
+    handle_code_action_post_hook(action)
   end
 
   vim.ui.select(results, {
@@ -153,6 +154,23 @@ function M.expr_search_hints()
     end,
   })
   input:mount()
+end
+
+function M.setup()
+  local custom_handler = plugin_config.options.code_action_post_hook
+  if custom_handler == nil then
+    return
+  end
+  local ui_select = vim.ui.select
+  vim.ui.select = function(action_tuples, opts, on_user_choice)
+    local function on_choice(action_tuple)
+      on_user_choice(action_tuple)
+      if opts.kind == 'codeaction' then
+	custom_handler(action_tuple[2])
+      end
+    end
+    ui_select(action_tuples, opts, on_choice)
+  end
 end
 
 return M
