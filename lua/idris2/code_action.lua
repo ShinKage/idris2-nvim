@@ -16,6 +16,28 @@ M.filters = {
   REF_HOLE = 'refactor.rewrite.RefineHole',
 }
 
+function M.introspect_filter(action)
+  if string.match(action.title, "Case split") then
+    return M.filters.CASE_SPLIT
+  elseif string.match(action.title, "Make case") then
+    return M.filters.MAKE_CASE
+  elseif string.match(action.title, "Make with") then
+    return M.filters.MAKE_WITH
+  elseif string.match(action.title, "Add clause") then
+    return M.filters.ADD_CLAUSE
+  elseif string.match(action.title, "Make lemma") then
+    return M.filters.MAKE_LEMMA
+  elseif string.match(action.title, "Add clause") then
+    return M.filters.ADD_CLAUSE
+  elseif string.match(action.title, "Expression search") then
+    return M.filters.EXPR_SEARCH
+  elseif string.match(action.title, "Generate definition") then
+    return M.filters.GEN_DEF
+  elseif string.match(action.title, "Refine hole") then
+    return M.filters.REF_HOLE
+  end
+end
+
 local function has_multiple_results(filter)
   return filter == M.filters.EXPR_SEARCH
            or filter == M.filters.GEN_DEF
@@ -165,8 +187,9 @@ function M.setup()
   vim.ui.select = function(action_tuples, opts, on_user_choice)
     local function on_choice(action_tuple)
       on_user_choice(action_tuple)
-      if opts.kind == 'codeaction' then
-	custom_handler(action_tuple[2])
+      if opts.kind == 'codeaction'
+	and action_tuple ~= nil then
+	  custom_handler(action_tuple[2])
       end
     end
     ui_select(action_tuples, opts, on_choice)
