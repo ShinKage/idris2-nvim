@@ -56,6 +56,40 @@ require('idris2').setup(opts)
 
 You can specify a setup function in your configuration at `server.on_attach` in order specify any vim key bindings or options you want to only be set when connected to the Idris LSP.
 
+```lua
+local function custom_on_attach(client)
+  -- do things like register key bindings
+end
+
+require('idris2').setup({server = {on_attach = custom_on_attach}})
+```
+
+### Code Action Hook
+
+If you want to perform some action after the LSP completes a Code Action, you can register a hook (a function to be called when any code action is completed). For example, you may want to have the buffer written after the code action which would then trigger the LSP to re-apply semantic highlighting.
+
+```lua
+local function save_hook(action)
+  vim.cmd('silent write')
+end
+
+require('idris2').setup({code_action_post_hook = save_hook})
+```
+
+Your function will be called with the chosen code action as its only parameter. This action parameter has a `title` and optionally an `edit`. The details of these fields are defined by the Language Server Protocol, but you can use this plugin's `introspect_filter()` function to quickly determine what code action was taken (see [Code Action Filters](#filters) for the possible return values).
+
+```lua
+local filters = require('idris2.code_action').filters
+local introspect = require('idris2.code_action').introspect_filter
+local function save_hook(action)
+  if introspect(action) == filters.MAKE_CASE
+    or introspect(action) == filters.MAKE_WITH then
+      return
+  end
+  vim.cmd('silent write')
+end
+```
+
 ### Semantic Highlighting
 The server uses the regular syntax highlight groups as defaults for semantic highlight groups. Some examples of custom configuration are:
 
@@ -135,6 +169,18 @@ vim.cmd [[nnoremap <Leader>cs <Cmd>lua require('idris2.code_action').case_split(
 |`refine_hole`      |Tries to partially fill a metavar, produces multiple results                      |
 |`refine_hole_hints`|Same as `expr_search` but asks the user for comma-separated names to give as hints|
 |`expr_search_hints`|Same as `refine_hole` but asks the user for comma-separated names to give as hints|
+
+#### Filters
+The following filters are defined and can be used to categorize code actions in the `code_action_post_hook` in addition to filtering which code actions the server should provide upon request.
+
+- `CASE_SPLIT`
+- `MAKE_CASE`
+- `MAKE_WITH`
+- `MAKE_LEMMA`
+- `ADD_CLAUSE`
+- `EXPR_SEARCH`
+- `GEN_DEF`
+- `REF_HOLE`
 
 ## Demo
 

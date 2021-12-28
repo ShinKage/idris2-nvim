@@ -1,4 +1,4 @@
-*idris2-nvim.txt*   Last change 2021 November 16
+*idris2-nvim.txt*   Last change 2021 December 28
 *idris2.nvim*       Author: ShinKage
                   Repository: https://github.com/ShinKage/idris2-nvim
 
@@ -74,8 +74,21 @@ table expected by the `setup` function, with the default values: >
     server = {}, -- Options passed to lspconfig idris2 configuration
     hover_split_position = 'bottom', -- bottom, top, left or right
     autostart_semantic = true, -- Should start and refresh semantic highlight automatically
+    -- Function to execute after a code action is performed:
+    code_action_post_hook = function(action) end,
   }
 <
+
+If you want to perform some action after the LSP completes a Code Action,
+you can register a hook (a function to be called when any code action is
+completed). 
+
+Your function will be called with the chosen code action as its only parameter.
+This action parameter has a `title` and optionally an `edit`. The details of these
+fields are defined by the Language Server Protocol, but you can use this plugin's
+`introspect_filter()` function to quickly determine what code action was taken
+(see |idris2.code_action.filters| for the possible return values).
+
 ===============================================================================
 API                                                             *idris2-nvim-api*
 
@@ -169,9 +182,18 @@ Before the request asks the user, via an input popup, for the expression to evau
 ===============================================================================
 Lua module: idris2.code_action                               *idris2.code_action*
 
+filters                                           *idris2.code_action.filters*
+`filters` is a list of possible filters to pass to `request_single()` or get
+back from `introspect_filter()`.
+
 request_single({filter})                  *idris2.code_action.request_single()*
 `request_single` is the handler for a single Idris2 LSP Server code action,
 matched by the provided filter.
+
+introspect_filter({action})            *idris2.code_action.introspect_filter()*
+`introspect_filter` returns the filter that categorizes the action passed to
+it. In other words, what filter would have been passed to `request_single()`
+to cause only actions of the given type to be considered.
 
 case_split()                                  *idris2.code_action.case_split()*
 `case_split` requests only a Case Split action from the Idris2 LSP Server.
