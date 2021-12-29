@@ -1,6 +1,7 @@
 local config = require('idris2.config')
 local semantic = require('idris2.semantic')
 local hover = require('idris2.hover')
+local code_action = require('idris2.code_action')
 
 local M = {}
 
@@ -69,6 +70,7 @@ function M.setup(options)
   setup_on_attach()
   setup_handlers()
   hover.setup()
+  code_action.setup()
 
   vim.cmd [[highlight link LspSemantic_variable idrisString]]
   vim.cmd [[highlight link LspSemantic_enumMember idrisStructure]]

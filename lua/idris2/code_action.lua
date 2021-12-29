@@ -1,6 +1,8 @@
 local Input = require("nui.input")
 local event = require("nui.utils.autocmd").event
 
+local plugin_config = require('idris2.config')
+
 local M = {}
 
 M.filters = {
@@ -14,10 +16,39 @@ M.filters = {
   REF_HOLE = 'refactor.rewrite.RefineHole',
 }
 
+function M.introspect_filter(action)
+  if string.match(action.title, "Case split") then
+    return M.filters.CASE_SPLIT
+  elseif string.match(action.title, "Make case") then
+    return M.filters.MAKE_CASE
+  elseif string.match(action.title, "Make with") then
+    return M.filters.MAKE_WITH
+  elseif string.match(action.title, "Add clause") then
+    return M.filters.ADD_CLAUSE
+  elseif string.match(action.title, "Make lemma") then
+    return M.filters.MAKE_LEMMA
+  elseif string.match(action.title, "Add clause") then
+    return M.filters.ADD_CLAUSE
+  elseif string.match(action.title, "Expression search") then
+    return M.filters.EXPR_SEARCH
+  elseif string.match(action.title, "Generate definition") then
+    return M.filters.GEN_DEF
+  elseif string.match(action.title, "Refine hole") then
+    return M.filters.REF_HOLE
+  end
+end
+
 local function has_multiple_results(filter)
   return filter == M.filters.EXPR_SEARCH
            or filter == M.filters.GEN_DEF
            or filter == M.filters.REF_HOLE
+end
+
+local function handle_code_action_post_hook(action)
+  local optional_post_hook = plugin_config.options.code_action_post_hook
+  if optional_post_hook ~= nil then
+    optional_post_hook(action)
+  end
 end
 
 local function single_action_handler(err, result, ctx, config)
@@ -36,6 +67,8 @@ local function single_action_handler(err, result, ctx, config)
   if action.edit ~= nil then
     vim.lsp.util.apply_workspace_edit(action.edit)
   end
+
+  handle_code_action_post_hook(action)
 end
 
 function M.request_single(filter)
@@ -69,6 +102,8 @@ local function on_with_hints_results(err, results, ctx, config)
       return
     end
     vim.lsp.util.apply_workspace_edit(action.edit)
+
+    handle_code_action_post_hook(action)
   end
 
   vim.ui.select(results, {
@@ -141,6 +176,24 @@ function M.expr_search_hints()
     end,
   })
   input:mount()
+end
+
+function M.setup()
+  local custom_handler = plugin_config.options.code_action_post_hook
+  if custom_handler == nil then
+    return
+  end
+  local ui_select = vim.ui.select
+  vim.ui.select = function(action_tuples, opts, on_user_choice)
+    local function on_choice(action_tuple)
+      on_user_choice(action_tuple)
+      if opts.kind == 'codeaction'
+	and action_tuple ~= nil then
+	  custom_handler(action_tuple[2])
+      end
+    end
+    ui_select(action_tuples, opts, on_choice)
+  end
 end
 
 return M
