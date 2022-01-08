@@ -50,6 +50,8 @@ local opts = {
   server = {}, -- Options passed to lspconfig idris2 configuration
   hover_split_position = 'bottom', -- bottom, top, left or right
   autostart_semantic = true, -- Should start and refresh semantic highlight automatically
+  code_action_post_hook = function(action) end, -- Function to execute after a code action is performed:
+  use_default_semantic_hl_groups = true, -- Set default highlight groups for semantic tokens
 }
 require('idris2').setup(opts)
 ```
@@ -91,7 +93,8 @@ end
 ```
 
 ### Semantic Highlighting
-The server uses the regular syntax highlight groups as defaults for semantic highlight groups. Some examples of custom configuration are:
+The server uses the regular syntax highlight groups as defaults for semantic highlight groups, if the option `use_default_semantic_hl_groups` is set to `true`.
+Some examples of custom configuration are:
 
 ```lua
 vim.cmd [[highlight link LspSemantic_type Include]] -- Use the same highlight as the Include group

@@ -53,7 +53,7 @@ local function setup_lsp()
   -- the function that adds files to the attached LSP instance, so that it
   -- doesn't add Idris2 files in the installation prefix (idris2 --prefix)
   local old_try_add = nvim_lsp.idris2_lsp.manager.try_add
-  local res = vim.split(vim.fn.system({'idris2', '--prefix'}), '\n')[1]
+  local res = vim.split(vim.fn.system({ 'idris2', '--prefix' }), '\n')[1]
   nvim_lsp.idris2_lsp.manager.try_add = function(bufnr)
     bufnr = bufnr or vim.api.nvim_get_current_buf()
     local path = vim.api.nvim_buf_get_name(bufnr)
@@ -72,14 +72,16 @@ function M.setup(options)
   hover.setup()
   code_action.setup()
 
-  vim.cmd [[highlight link LspSemantic_variable idrisString]]
-  vim.cmd [[highlight link LspSemantic_enumMember idrisStructure]]
-  vim.cmd [[highlight link LspSemantic_function idrisIdentifier]]
-  vim.cmd [[highlight link LspSemantic_type idrisType]]
-  vim.cmd [[highlight link LspSemantic_keyword idrisStatement]]
-  vim.cmd [[highlight link LspSemantic_namespace idrisImport]]
-  vim.cmd [[highlight link LspSemantic_postulate idrisStatement]]
-  vim.cmd [[highlight link LspSemantic_module idrisModule]]
+  if config.use_default_semantic_hl_groups then
+    vim.cmd [[highlight link LspSemantic_variable idrisString]]
+    vim.cmd [[highlight link LspSemantic_enumMember idrisStructure]]
+    vim.cmd [[highlight link LspSemantic_function idrisIdentifier]]
+    vim.cmd [[highlight link LspSemantic_type idrisType]]
+    vim.cmd [[highlight link LspSemantic_keyword idrisStatement]]
+    vim.cmd [[highlight link LspSemantic_namespace idrisImport]]
+    vim.cmd [[highlight link LspSemantic_postulate idrisStatement]]
+    vim.cmd [[highlight link LspSemantic_module idrisModule]]
+  end
 
   setup_lsp()
 end
