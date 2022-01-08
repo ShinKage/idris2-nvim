@@ -7,6 +7,10 @@ local M = {}
 M.res_split = nil
 
 function M.handler(err, result, ctx, cfg)
+  if err ~= nil then
+    vim.notify(err, vim.log.levels.ERROR)
+    return
+  end
   if not result then
     return
   end
@@ -64,7 +68,7 @@ function M.setup()
   vim.api.nvim_buf_set_name(M.res_split.bufnr, 'Idris2 LSP Response Buffer')
   M.res_split:on({event.BufWinEnter, event.BufEnter}, function()
     if vim.fn.winnr('$') == 1 and vim.api.nvim_get_current_win() == M.res_split.winid then
-      vim.cmd([[q]])
+      vim.cmd [[q]]
     end
   end)
   M.res_split:on({event.BufHidden, event.WinClosed}, function()

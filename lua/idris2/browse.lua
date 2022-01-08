@@ -45,8 +45,13 @@ local name_popup_options = {
 function M.menu_handler(ns, opts)
   local opts = opts or {}
   return function (err, result, ctx, config)
+    if err ~= nil then
+      vim.notify(err, vim.log.levels.ERROR)
+      return
+    end
+
     if vim.tbl_isempty(result) then
-      print('No definitions in ' .. ns)
+      vim.notify('No definitions in ' .. ns, vim.log.levels.INFO)
       return
     end
 
@@ -72,7 +77,7 @@ function M.menu_handler(ns, opts)
         if item.entry.location ~= nil then
           vim.lsp.util.jump_to_location(item.entry.location)
         else
-          error('selected name is not in a physical location')
+          vim.notify('Selected name is not in a physical location', vim.log.levels.ERROR)
         end
       end,
     })

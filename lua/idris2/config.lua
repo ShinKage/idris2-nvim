@@ -12,6 +12,7 @@ local defaults = {
   server = {},
   hover_split_position = 'bottom',
   autostart_semantic = true,
+  use_default_semantic_hl_groups = true,
 }
 
 M.options = {}

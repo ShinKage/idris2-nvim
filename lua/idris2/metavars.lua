@@ -43,8 +43,12 @@ function M.jump_handler(backward)
   end
 
   return function(err, result, ctx, config)
+    if err ~= nil then
+      vim.notify(err, vim.log.levels.ERROR)
+      return
+    end
     if vim.tbl_isempty(result) then
-      print('No metavariables in context')
+      vim.notify('No metavariables in context', vim.log.levels.INFO)
       return
     end
 
@@ -74,8 +78,13 @@ end
 function M.menu_handler(opts)
   local opts = opts or {}
   return function (err, result, ctx, config)
+    if err ~= nil then
+      vim.notify(err, vim.log.levels.ERROR)
+      return
+    end
+
     if vim.tbl_isempty(result) then
-      print('No metavariables in context')
+      vim.notify('No metavariables in context', vim.log.levels.INFO)
       return
     end
 
@@ -100,7 +109,7 @@ function M.menu_handler(opts)
         if item.metavar.location ~= nil then
           vim.lsp.util.jump_to_location(item.metavar.location)
         else
-          error('selected metavar is not in a physical location')
+          vim.notify('Selected metavar is not in a physical location', vim.log.levels.ERROR)
         end
       end,
     })
@@ -113,15 +122,15 @@ function M.menu_handler(opts)
 end
 
 function M.request_all(opts)
-  vim.lsp.buf_request(0, 'workspace/executeCommand', {command = 'metavars'}, M.menu_handler(opts))
+  vim.lsp.buf_request(0, 'workspace/executeCommand', { command = 'metavars' }, M.menu_handler(opts))
 end
 
 function M.goto_next()
-  vim.lsp.buf_request(0, 'workspace/executeCommand', {command = 'metavars'}, M.jump_handler(false))
+  vim.lsp.buf_request(0, 'workspace/executeCommand', { command = 'metavars' }, M.jump_handler(false))
 end
 
 function M.goto_prev()
-  vim.lsp.buf_request(0, 'workspace/executeCommand', {command = 'metavars'}, M.jump_handler(true))
+  vim.lsp.buf_request(0, 'workspace/executeCommand', { command = 'metavars' }, M.jump_handler(true))
 end
 
 return M

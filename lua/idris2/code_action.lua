@@ -52,13 +52,18 @@ local function handle_code_action_post_hook(action)
 end
 
 local function single_action_handler(err, result, ctx, config)
+  if err ~= nil then
+    vim.notify(err, vim.log.levels.ERROR)
+    return
+  end
+
   if not result or #result == 0 then
     vim.notify('No code actions available', vim.log.levels.INFO)
     return
   end
 
   if #result > 1 then
-    error('Received code action with multiple results')
+    vim.notify('Received code action with multiple results', vim.log.levels.ERROR)
     return
   end
 
@@ -92,6 +97,11 @@ function M.generate_def() M.request_single(M.filters.GEN_DEF)     end
 function M.refine_hole()  M.request_single(M.filters.REF_HOLE)    end
 
 local function on_with_hints_results(err, results, ctx, config)
+  if err ~= nil then
+    vim.notify(err, vim.log.levels.ERROR)
+    return
+  end
+
   if not results or #results == 0 then
     vim.notify('No code actions available', vim.log.levels.INFO)
     return
@@ -187,9 +197,8 @@ function M.setup()
   vim.ui.select = function(action_tuples, opts, on_user_choice)
     local function on_choice(action_tuple)
       on_user_choice(action_tuple)
-      if opts.kind == 'codeaction'
-	and action_tuple ~= nil then
-	  custom_handler(action_tuple[2])
+      if opts.kind == 'codeaction' and action_tuple ~= nil then
+        custom_handler(action_tuple[2])
       end
     end
     ui_select(action_tuples, opts, on_choice)

@@ -9,6 +9,10 @@ function M.request(bufnr)
 end
 
 function M.refresh(err, result, ctx, cfg)
+  if err ~= nil then
+    vim.notify(err, vim.log.levels.ERROR)
+    return
+  end
   if config.semantic_refresh then
     M.request(ctx.bufnr)
   end
@@ -16,6 +20,11 @@ function M.refresh(err, result, ctx, cfg)
 end
 
 function M.full(err, result, ctx, cfg)
+  if err ~= nil then
+    vim.notify(err, vim.log.levels.ERROR)
+    return
+  end
+
   local client = vim.lsp.get_client_by_id(ctx.client_id)
   local bufnr = ctx.bufnr
   local legend = client.server_capabilities.semanticTokensProvider.legend
@@ -42,7 +51,7 @@ function M.full(err, result, ctx, cfg)
     local byte_end = vim.str_byteindex(line, prev_start + data[i + 2])
     vim.api.nvim_buf_add_highlight(bufnr, ns, 'LspSemantic_' .. token_type, prev_line, byte_start, byte_end)
   end
-  print(vim.fn.expand('%:t') .. ' semantically highlighted')
+  vim.notify(vim.fn.expand('%:t') .. ' semantically highlighted', vim.log.levels.INFO)
 end
 
 function M.clear()
