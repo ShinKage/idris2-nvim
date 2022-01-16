@@ -72,7 +72,7 @@ function M.setup(options)
   hover.setup()
   code_action.setup()
 
-  if config.use_default_semantic_hl_groups then
+  if config.options.use_default_semantic_hl_groups then
     vim.cmd [[highlight link LspSemantic_variable idrisString]]
     vim.cmd [[highlight link LspSemantic_enumMember idrisStructure]]
     vim.cmd [[highlight link LspSemantic_function idrisIdentifier]]
