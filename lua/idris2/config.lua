@@ -5,6 +5,8 @@ local defaults = {
   client = {
     hover = {
       use_split = false,
+      split_size = '30%',
+      auto_resize_split = false,
       with_history = false,
     },
   },
