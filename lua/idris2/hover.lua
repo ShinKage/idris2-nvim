@@ -17,17 +17,18 @@ function M.handler(err, result, ctx, cfg)
 
   if config.split_open then
     vim.api.nvim_buf_set_option(M.res_split.bufnr, 'modifiable', true)
-    local prefixlines = {
-      '------------------------------',
-      '-- ' .. vim.fn.strftime('%c') .. ' --',
-      '------------------------------'
-    }
+
     local lines = vim.split(result.contents.value, '\n')
     lines = vim.lsp.util.trim_empty_lines(lines)
     table.insert(lines, 1, '')
     table.insert(lines, '')
 
     if config.split_history then
+      local prefixlines = {
+        '------------------------------',
+        '-- ' .. vim.fn.strftime('%c') .. ' --',
+        '------------------------------'
+      }
       vim.api.nvim_buf_set_lines(M.res_split.bufnr, -1, -1, false, prefixlines)
       vim.api.nvim_buf_set_lines(M.res_split.bufnr, -1, -1, false, lines)
       local count = vim.api.nvim_buf_line_count(M.res_split.bufnr)
