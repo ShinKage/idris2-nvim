@@ -49,7 +49,7 @@ end
 function M.setup()
   M.res_split = Split({
     relative = 'editor',
-    position = config.options.hover_split_position,
+    position = config.options.client.hover.split_position,
     size = config.options.client.hover.split_size,
     focusable = false,
     win_options = {
