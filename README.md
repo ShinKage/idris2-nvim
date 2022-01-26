@@ -44,6 +44,8 @@ local opts = {
   client = {
     hover = {
       use_split = false, -- Persistent split instead of popups for hover
+      split_size = '30%', -- Size of persistent split, if used
+      auto_resize_split = false, -- Should resize split to use minimum space
       with_history = false, -- Show history of hovers instead of only last
     },
   },

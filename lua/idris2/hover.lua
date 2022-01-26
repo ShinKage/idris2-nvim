@@ -17,22 +17,27 @@ function M.handler(err, result, ctx, cfg)
 
   if config.split_open then
     vim.api.nvim_buf_set_option(M.res_split.bufnr, 'modifiable', true)
-    local prefixlines = {
-      '------------------------------',
-      '-- ' .. vim.fn.strftime('%c') .. ' --',
-      '------------------------------'
-    }
+
     local lines = vim.split(result.contents.value, '\n')
     lines = vim.lsp.util.trim_empty_lines(lines)
+    table.insert(lines, 1, '')
     table.insert(lines, '')
 
     if config.split_history then
+      local prefixlines = {
+        '------------------------------',
+        '-- ' .. vim.fn.strftime('%c') .. ' --',
+        '------------------------------'
+      }
       vim.api.nvim_buf_set_lines(M.res_split.bufnr, -1, -1, false, prefixlines)
       vim.api.nvim_buf_set_lines(M.res_split.bufnr, -1, -1, false, lines)
       local count = vim.api.nvim_buf_line_count(M.res_split.bufnr)
       vim.api.nvim_win_set_cursor(M.res_split.winid, {count, 0})
     else
       vim.api.nvim_buf_set_lines(M.res_split.bufnr, 0, -1, false, lines)
+      if config.options.client.hover.auto_resize_split then
+        vim.api.nvim_win_set_height(M.res_split.winid, #(lines))
+      end
     end
 
     vim.api.nvim_buf_set_option(M.res_split.bufnr, 'modifiable', false)
@@ -45,7 +50,7 @@ function M.setup()
   M.res_split = Split({
     relative = 'editor',
     position = config.options.hover_split_position,
-    size = '30%',
+    size = config.options.client.hover.split_size,
     focusable = false,
     win_options = {
       foldenable = false,
