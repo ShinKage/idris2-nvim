@@ -70,7 +70,7 @@ local function single_action_handler(err, result, ctx, config)
   local action = result[1]
 
   if action.edit ~= nil then
-    vim.lsp.util.apply_workspace_edit(action.edit)
+    vim.lsp.util.apply_workspace_edit(action.edit, 'utf-32')
   end
 
   handle_code_action_post_hook(action)
@@ -111,7 +111,7 @@ local function on_with_hints_results(err, results, ctx, config)
     if not action then
       return
     end
-    vim.lsp.util.apply_workspace_edit(action.edit)
+    vim.lsp.util.apply_workspace_edit(action.edit, 'utf-32')
 
     handle_code_action_post_hook(action)
   end
