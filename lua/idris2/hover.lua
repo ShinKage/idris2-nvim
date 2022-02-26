@@ -91,8 +91,11 @@ function M.setup()
     config.split_open = false
     M.res_split:hide()
   end)
-  if ft ~= 'idris2' or not config.split_open then
-    M.res_split:hide()
+  M.res_split:hide()
+  if config.options.client.hover.use_split then
+    vim.cmd [[
+      autocmd BufEnter *.idr ++once lua require('idris2.hover').open_split()
+    ]]
   end
 end
 
