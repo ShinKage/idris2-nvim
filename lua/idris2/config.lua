@@ -9,6 +9,7 @@ local defaults = {
       auto_resize_split = false,
       split_position = 'bottom',
       with_history = false,
+      use_as_popup = false,
     },
   },
   -- opts for nvim-lspconfig
@@ -27,7 +28,7 @@ function M.setup(options)
   if M.options.autostart_semantic then
     M.semantic_refresh = true
   end
-  if M.options.client.hover.use_split then
+  if M.options.client.hover.use_split and not M.options.client.hover.use_as_popup then
     M.split_open = true
   end
 end

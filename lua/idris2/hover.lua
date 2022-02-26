@@ -15,6 +15,16 @@ function M.handler(err, result, ctx, cfg)
     return
   end
 
+  if config.options.client.hover.use_as_popup and not config.split_open then
+    M.open_split()
+    vim.cmd [[
+      augroup idris2_split_popup
+        autocmd!
+        autocmd CursorMoved,CursorMovedI,InsertCharPre <buffer> ++once lua require('idris2.hover').close_split()
+      augroup end
+    ]]
+  end
+
   if config.split_open then
     vim.api.nvim_buf_set_option(M.res_split.bufnr, 'modifiable', true)
 
