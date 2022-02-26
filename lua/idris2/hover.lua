@@ -92,7 +92,7 @@ function M.setup()
     M.res_split:hide()
   end)
   M.res_split:hide()
-  if config.options.client.hover.use_split then
+  if config.options.client.hover.use_split and not config.options.client.hover.use_as_popup then
     vim.cmd [[
       autocmd BufEnter *.idr ++once lua require('idris2.hover').open_split()
     ]]
