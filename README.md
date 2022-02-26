@@ -48,6 +48,7 @@ local opts = {
       auto_resize_split = false, -- Should resize split to use minimum space
       split_position = 'bottom', -- bottom, top, left or right
       with_history = false, -- Show history of hovers instead of only last
+      use_as_popup = false, -- Close the split on cursor movement
     },
   },
   server = {}, -- Options passed to lspconfig idris2 configuration
