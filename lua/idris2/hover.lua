@@ -47,6 +47,7 @@ function M.handler(err, result, ctx, cfg)
 end
 
 function M.setup()
+  local ft = vim.bo.filetype
   M.res_split = Split({
     relative = 'editor',
     position = config.options.client.hover.split_position,
@@ -80,7 +81,7 @@ function M.setup()
     config.split_open = false
     M.res_split:hide()
   end)
-  if not config.split_open then
+  if ft ~= 'idris2' or not config.split_open then
     M.res_split:hide()
   end
 end
