@@ -43,7 +43,7 @@ local name_popup_options = {
 
 -- err, result, ctx
 function M.menu_handler(ns, opts)
-  local opts = opts or {}
+  local opts = opts or { popup = true }
   return function (err, result, ctx, config)
     if err ~= nil then
       vim.notify(err, vim.log.levels.ERROR)
@@ -75,7 +75,7 @@ function M.menu_handler(ns, opts)
       },
       on_submit = function(item)
         if item.entry.location ~= nil then
-          vim.lsp.util.jump_to_location(item.entry.location)
+          vim.lsp.util.jump_to_location(item.entry.location, 'utf-32')
         else
           vim.notify('Selected name is not in a physical location', vim.log.levels.ERROR)
         end
@@ -89,7 +89,7 @@ function M.menu_handler(ns, opts)
   end
 end
 
-function M.browse(name, opts)
+function M.browse(opts)
   local input = Input(name_popup_options, {
     prompt = '> ',
     default_value = '',

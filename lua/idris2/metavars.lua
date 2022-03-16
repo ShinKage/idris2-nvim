@@ -67,11 +67,11 @@ function M.jump_handler(backward)
 
     for _, v in ipairs(result) do
       if compare(v.location.range.start, curloc) then
-        vim.lsp.util.jump_to_location(v.location)
+        vim.lsp.util.jump_to_location(v.location, 'utf-32')
         return
       end
     end
-    vim.lsp.util.jump_to_location(result[1].location)
+    vim.lsp.util.jump_to_location(result[1].location, 'utf-32')
   end
 end
 
@@ -107,7 +107,7 @@ function M.menu_handler(opts)
       },
       on_submit = function(item)
         if item.metavar.location ~= nil then
-          vim.lsp.util.jump_to_location(item.metavar.location)
+          vim.lsp.util.jump_to_location(item.metavar.location, 'utf-32')
         else
           vim.notify('Selected metavar is not in a physical location', vim.log.levels.ERROR)
         end

@@ -172,7 +172,7 @@ browse({opts})                                         *idris2.browse.browse()*
 Idris2 LSP server. Before the request asks the user, via an input popup,
 for the namespace. The default options are: >
   {
-    popup = false, -- Closes the menu when out of focus
+    popup = true, -- Closes the menu when out of focus
   }
 
 ===============================================================================
