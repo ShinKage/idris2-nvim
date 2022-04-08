@@ -21,7 +21,7 @@ end
 
 function M.full(err, result, ctx, cfg)
   if err ~= nil then
-    vim.notify(err, vim.log.levels.ERROR)
+    vim.notify(tostring(err), vim.log.levels.ERROR)
     return
   end
 
