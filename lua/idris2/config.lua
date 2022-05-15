@@ -16,6 +16,7 @@ local defaults = {
   server = {},
   autostart_semantic = true,
   use_default_semantic_hl_groups = true,
+  default_regexp_syntax = true,
 }
 
 M.options = {}
@@ -31,6 +32,7 @@ function M.setup(options)
   if M.options.client.hover.use_split and not M.options.client.hover.use_as_popup then
     M.split_open = true
   end
+  vim.g.idris2_regexp_syntax_enabled = options.default_regexp_syntax
 end
 
 return M

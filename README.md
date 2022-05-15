@@ -55,6 +55,7 @@ local opts = {
   autostart_semantic = true, -- Should start and refresh semantic highlight automatically
   code_action_post_hook = function(action) end, -- Function to execute after a code action is performed:
   use_default_semantic_hl_groups = true, -- Set default highlight groups for semantic tokens
+  default_regexp_syntax = true, -- Enable default highlight groups for traditional syntax based highlighting
 }
 require('idris2').setup(opts)
 ```

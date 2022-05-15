@@ -46,36 +46,38 @@ syn region idrisString start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=@Spell
 syn region idrisBlockComment start="{-" end="-}" contains=idrisBlockComment,idrisTodo,@Spell
 syn match idrisIdentifier "[a-zA-Z][a-zA-z0-9_']*" contained
 
-highlight def link idrisDeprecated Error
-highlight def link idrisIdentifier Identifier
-highlight def link idrisImport Structure
-highlight def link idrisModule Structure
-highlight def link idrisStructure Structure
-highlight def link idrisStatement Statement
-highlight def link idrisForall Structure
-highlight def link idrisDataOpt Statement
-highlight def link idrisDSL Statement
-highlight def link idrisBlock Statement
-highlight def link idrisAnnotation Statement
-highlight def link idrisWhere Structure
-highlight def link idrisLet Structure
-highlight def link idrisTotality Statement
-highlight def link idrisVisibility Statement
-highlight def link idrisConditional Conditional
-highlight def link idrisPragma Statement
-highlight def link idrisNumber Number
-highlight def link idrisFloat Float
-highlight def link idrisDelimiter Delimiter
-highlight def link idrisInfix PreProc
-highlight def link idrisOperators Operator
-highlight def link idrisType Include
-highlight def link idrisDocComment Comment
-highlight def link idrisLineComment Comment
-highlight def link idrisBlockComment Comment
-highlight def link idrisTodo Todo
-highlight def link idrisMetaVar Macro
-highlight def link idrisString String
-highlight def link idrisChar String
-highlight def link idrisBacktick Operator
+if !exists("g:idris2_regexp_syntax_enabled") || g:idris2_regexp_syntax_enabled
+  highlight def link idrisDeprecated Error
+  highlight def link idrisIdentifier Identifier
+  highlight def link idrisImport Structure
+  highlight def link idrisModule Structure
+  highlight def link idrisStructure Structure
+  highlight def link idrisStatement Statement
+  highlight def link idrisForall Structure
+  highlight def link idrisDataOpt Statement
+  highlight def link idrisDSL Statement
+  highlight def link idrisBlock Statement
+  highlight def link idrisAnnotation Statement
+  highlight def link idrisWhere Structure
+  highlight def link idrisLet Structure
+  highlight def link idrisTotality Statement
+  highlight def link idrisVisibility Statement
+  highlight def link idrisConditional Conditional
+  highlight def link idrisPragma Statement
+  highlight def link idrisNumber Number
+  highlight def link idrisFloat Float
+  highlight def link idrisDelimiter Delimiter
+  highlight def link idrisInfix PreProc
+  highlight def link idrisOperators Operator
+  highlight def link idrisType Include
+  highlight def link idrisDocComment Comment
+  highlight def link idrisLineComment Comment
+  highlight def link idrisBlockComment Comment
+  highlight def link idrisTodo Todo
+  highlight def link idrisMetaVar Macro
+  highlight def link idrisString String
+  highlight def link idrisChar String
+  highlight def link idrisBacktick Operator
+endif
 
 let b:current_syntax = "idris2"
