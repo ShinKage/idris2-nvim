@@ -23,7 +23,6 @@ local term_popup_options = {
   },
 }
 
--- err, result, ctx
 function M.menu_handler(expression)
   return function (err, result, ctx, config)
     if err ~= nil then
