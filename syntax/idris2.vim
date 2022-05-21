@@ -38,7 +38,7 @@ syn match idrisType "\<[A-Z][a-zA-Z0-9_']*\>"
 syn keyword idrisTodo TODO FIXME XXX HACK contained
 syn match idrisLineComment "---*\([^-!#$%&\*\+./<=>\?@\\^|~].*\)\?$" contains=idrisTodo,@Spell
 syn match idrisDocComment "|||\([^-!#$%&\*\+./<=>\?@\\^|~].*\)\?$" contains=idrisTodo,@Spell
-syn match idrisMetaVar "?[a-zA-Z][A-Za-z0-9_']*"
+syn match idrisMetaVar "?[a-zA-Z_][A-Za-z0-9_']*"
 syn match idrisPragma "%\(hide\|logging\|auto_lazy\|unbound_implicits\|prefix_record_projections\|ambiguity_depth\|nf_metavar_threshold\|search_timeout\|pair\|rewrite\|integerLit\|stringLit\|charLit\|doubleLit\|name\|start\|allow_overloads\|language\|default\|transform\|hint\|globalhint\|defaulthint\|inline\|noinline\|extern\|macro\|spec\|foreign\|nomangle\|builtin\|MkWorld\|World\|search\|runElab\|tcinline\|auto_implicit_depth\)"
 syn match idrisChar "'[^'\\]'\|'\\.'\|'\\u[0-9a-fA-F]\{4}'"
 syn match idrisBacktick "`[A-Za-z][A-Za-z0-9_']*`"

@@ -94,7 +94,6 @@ function M.make_lemma()   M.request_single(M.filters.MAKE_LEMMA)  end
 function M.add_clause()   M.request_single(M.filters.ADD_CLAUSE)  end
 function M.expr_search()  M.request_single(M.filters.EXPR_SEARCH) end
 function M.generate_def() M.request_single(M.filters.GEN_DEF)     end
-function M.refine_hole()  M.request_single(M.filters.REF_HOLE)    end
 
 local function on_with_hints_results(err, results, ctx, config)
   if err ~= nil then
@@ -116,14 +115,18 @@ local function on_with_hints_results(err, results, ctx, config)
     handle_code_action_post_hook(action)
   end
 
-  vim.ui.select(results, {
-    prompt = 'Code actions:',
-    kind = 'codeaction',
-    format_item = function(result)
-      local title = result.title:gsub('\r\n', '\\r\\n')
-      return title:gsub('\n', '\\n')
-    end,
-  }, apply_action)
+  if #results == 1 then
+    apply_action(results[1])
+  else
+    vim.ui.select(results, {
+      prompt = 'Code actions:',
+      kind = 'codeaction',
+      format_item = function(result)
+        local title = result.title:gsub('\r\n', '\\r\\n')
+        return title:gsub('\n', '\\n')
+      end,
+    }, apply_action)
+  end
 end
 
 local hints_popup_options = {
@@ -137,7 +140,7 @@ local hints_popup_options = {
     style = "rounded",
     highlight = "FloatBorder",
     text = {
-      top = "Hints",
+      top = "Hint",
       top_align = "left",
     },
   },
@@ -146,19 +149,18 @@ local hints_popup_options = {
   },
 }
 
-function M.refine_hole_hints()
+function M.refine_hole()
   local range = vim.lsp.util.make_range_params()
   local input = Input(hints_popup_options, {
     prompt = '> ',
     default_value = '',
     on_submit = function(value)
-      hints = vim.split(value, ',')
       range.context = { diagnostics = {} }
       local params = {
-        command = 'refineHoleWithHints',
+        command = 'refineHole',
         arguments = {{
           codeAction = range,
-          hints = hints,
+          hint = value,
         }},
       }
       vim.lsp.buf_request(0, 'workspace/executeCommand', params, on_with_hints_results)

@@ -229,18 +229,13 @@ Server. Can have multiple results, always ask for confirmation.
 
 refine_hole()                                *idris2.code_action.refine_hole()*
 `refine_hole` requests only a Refine Hole action from the Idris2 LSP Server.
-Can have multiple results, always ask for confirmation.
+Before the request asks the user, via an input popup,
+for a name to be provided as hint.
 
 expr_search_hints()                    *idris2.code_action.expr_search_hints()*
 `expr_search` requests only a Expression Search action from the Idris2 LSP
 Server. Before the request asks the user, via an input popup, for
 comma-separated names to be provided as hints.
-Can have multiple results, always ask for confirmation.
-
-refine_hole_hints()                    *idris2.code_action.refine_hole_hints()*
-`refine_hole` requests only a Refine Hole action from the Idris2 LSP Server.
-Before the request asks the user, via an input popup, for comma-separated
-names to be provided as hints.
 Can have multiple results, always ask for confirmation.
 
 ===============================================================================
