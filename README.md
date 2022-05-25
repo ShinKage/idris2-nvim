@@ -173,8 +173,7 @@ vim.cmd [[nnoremap <Leader>cs <Cmd>lua require('idris2.code_action').case_split(
 |`add_clause`       |Add a clause for a declaration, applies with no confirmation                      |
 |`expr_search`      |Tries to fill a metavar, produces multiple results                                |
 |`generate_def`     |Tries to build a complete definition for a declaration, produces multiple results |
-|`refine_hole`      |Tries to partially fill a metavar, produces multiple results                      |
-|`refine_hole_hints`|Same as `expr_search` but asks the user for comma-separated names to give as hints|
+|`refine_hole`      |Tries to partially fill a metavar with a name                                     |
 |`expr_search_hints`|Same as `refine_hole` but asks the user for comma-separated names to give as hints|
 
 #### Filters
