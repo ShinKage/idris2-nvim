@@ -175,6 +175,7 @@ vim.cmd [[nnoremap <Leader>cs <Cmd>lua require('idris2.code_action').case_split(
 |`generate_def`     |Tries to build a complete definition for a declaration, produces multiple results |
 |`refine_hole`      |Tries to partially fill a metavar with a name                                     |
 |`expr_search_hints`|Same as `refine_hole` but asks the user for comma-separated names to give as hints|
+|`intro`            |Tries to fill a metavar, with valid constructors, produces multiple results       |
 
 #### Filters
 The following filters are defined and can be used to categorize code actions in the `code_action_post_hook` in addition to filtering which code actions the server should provide upon request.
@@ -187,6 +188,7 @@ The following filters are defined and can be used to categorize code actions in 
 - `EXPR_SEARCH`
 - `GEN_DEF`
 - `REF_HOLE`
+- `INTRO`
 
 ## Demo
 

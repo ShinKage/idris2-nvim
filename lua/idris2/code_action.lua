@@ -14,6 +14,7 @@ M.filters = {
   EXPR_SEARCH = 'refactor.rewrite.ExprSearch',
   GEN_DEF = 'refactor.rewrite.GenerateDef',
   REF_HOLE = 'refactor.rewrite.RefineHole',
+  INTRO = 'refactor.rewrite.Intro',
 }
 
 function M.introspect_filter(action)
@@ -35,6 +36,8 @@ function M.introspect_filter(action)
     return M.filters.GEN_DEF
   elseif string.match(action.title, "Refine hole") then
     return M.filters.REF_HOLE
+  elseif string.match(action.title, "Intro") then
+    return M.filters.INTRO
   end
 end
 
@@ -42,6 +45,7 @@ local function has_multiple_results(filter)
   return filter == M.filters.EXPR_SEARCH
            or filter == M.filters.GEN_DEF
            or filter == M.filters.REF_HOLE
+           or filter == M.filters.INTRO
 end
 
 local function handle_code_action_post_hook(action)
@@ -94,6 +98,7 @@ function M.make_lemma()   M.request_single(M.filters.MAKE_LEMMA)  end
 function M.add_clause()   M.request_single(M.filters.ADD_CLAUSE)  end
 function M.expr_search()  M.request_single(M.filters.EXPR_SEARCH) end
 function M.generate_def() M.request_single(M.filters.GEN_DEF)     end
+function M.intro()        M.request_single(M.filters.INTRO)       end
 
 local function on_with_hints_results(err, results, ctx, config)
   if err ~= nil then

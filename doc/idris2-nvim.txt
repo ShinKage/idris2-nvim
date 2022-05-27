@@ -1,4 +1,4 @@
-*idris2-nvim.txt*   Last change 2022 May 15
+*idris2-nvim.txt*   Last change 2022 May 27
 *idris2.nvim*       Author: ShinKage
                   Repository: https://github.com/ShinKage/idris2-nvim
 
@@ -231,6 +231,10 @@ refine_hole()                                *idris2.code_action.refine_hole()*
 `refine_hole` requests only a Refine Hole action from the Idris2 LSP Server.
 Before the request asks the user, via an input popup,
 for a name to be provided as hint.
+
+intro()                                            *idris2.code_action.intro()*
+`intro` requests only an Intro action from the Idris2 LSP Server.
+Can have multiple results, always ask for confirmation.
 
 expr_search_hints()                    *idris2.code_action.expr_search_hints()*
 `expr_search` requests only a Expression Search action from the Idris2 LSP
