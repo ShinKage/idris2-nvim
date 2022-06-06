@@ -94,6 +94,14 @@ function M.hide_implicits()
   vim.lsp.buf_notify(0, 'workspace/didChangeConfiguration', { settings = { showImplicits = false } })
 end
 
+function M.show_machine_names()
+  vim.lsp.buf_notify(0, 'workspace/didChangeConfiguration', { settings = { showMachineNames = true } })
+end
+
+function M.hide_machine_names()
+  vim.lsp.buf_notify(0, 'workspace/didChangeConfiguration', { settings = { showMachineNames = false } })
+end
+
 function M.full_namespace()
   vim.lsp.buf_notify(0, 'workspace/didChangeConfiguration', { settings = { fullNamespace = true } })
 end

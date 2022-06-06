@@ -125,12 +125,14 @@ vim.cmd [[nnoremap <Leader>cs <Cmd>lua require('idris2.code_action').case_split(
 ```
 
 ### `idris2` module
-|Function        |Description                   |
-|----------------|------------------------------|
-|`show_implicits`|Show implicits in hovers      |
-|`hide_implicits`|Hide implicits in hovers      |
-|`full_namespace`|Show full namespaces in hovers|
-|`hide_namespace`|Hide namespaces in hovers     |
+|Function            |Description                   |
+|--------------------|------------------------------|
+|`show_implicits`    |Show implicits in hovers      |
+|`hide_implicits`    |Hide implicits in hovers      |
+|`show_machine_names`|Show machine names in hovers  |
+|`hide_machine_names`|Hide machine names in hovers  |
+|`full_namespace`    |Show full namespaces in hovers|
+|`hide_namespace`    |Hide namespaces in hovers     |
 
 ### `idris2.semantic` module
 |Function |Description                                            |

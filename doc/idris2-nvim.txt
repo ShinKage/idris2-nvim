@@ -107,14 +107,20 @@ show_implicits()                                      *idris2.show_implicits()*
 `show_implicits` asks the Idris2 LSP Server to show implicits in hovers.
 
 hide_implicits()                                      *idris2.hide_implicits()*
-`show_implicits` asks the Idris2 LSP Server to hide implicits in hovers.
+`hide_implicits` asks the Idris2 LSP Server to hide implicits in hovers.
+
+show_machine_names()                              *idris2.show_machine_names()*
+`show_machine_names` asks the Idris2 LSP Server to show machine names in hovers.
+
+hide_machine_names()                              *idris2.hide_machine_names()*
+`hide_machine_names` asks the Idris2 LSP Server to hide machine names in hovers.
 
 full_namespace()                                      *idris2.full_namespace()*
-`show_implicits` asks the Idris2 LSP Server to show the full namespace of names
+`full_namespace` asks the Idris2 LSP Server to show the full namespace of names
 in hovers.
 
 hide_namespace()                                      *idris2.hide_namespace()*
-`show_implicits` asks the Idris2 LSP Server to hide the full namespace of names
+`hide_namespace` asks the Idris2 LSP Server to hide the full namespace of names
 in hovers.
 
 ===============================================================================
