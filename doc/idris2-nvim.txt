@@ -185,9 +185,24 @@ for the namespace. The default options are: >
 ===============================================================================
 Lua module: idris2.repl                                           *idris2.repl*
 
-evaluate()                                             *idris2.repl.evaluate()*
+evaluate({opts})                                       *idris2.repl.evaluate()*
 `evaluate` sends a request to the LSP to evaluate a given expression.
 Before the request asks the user, via an input popup, for the expression to evaulate.
+The optional `expr` option expects a string sends it's value instead of
+prompting the user.
+The optional `visual` flag sends the last visual selection instead of
+prompting the user.
+The optional `sub` flag substitutes the evaluated result to the original
+expression, instead of showing it. It does nothing if `visual` is not enabled.
+prompting the user.
+The default options are: >
+  {
+    expr = '', -- Uses the provided string instead of the prompt
+    sub = false, -- Substitute the expression with the evaluation
+    visual = false, -- Uses the last selected text instead of the prompt
+    virtual = false, -- Prints the evaluated expression as virtual text at the
+                        end of the line
+  }
 
 ===============================================================================
 Lua module: idris2.code_action                               *idris2.code_action*

@@ -155,9 +155,9 @@ vim.cmd [[nnoremap <Leader>cs <Cmd>lua require('idris2.code_action').case_split(
 |`browse`     |Asks the user for a namespace and returns the list of names visible in that namespace|
 
 ### `idris2.repl` module
-|Function     |Description                                                                              |
-|-------------|-----------------------------------------------------------------------------------------|
-|`evaluate`   |Prompts for an expression that the LSP should evaluate in the context of the current file|
+|Function         |Description                                                                              |
+|-----------------|-----------------------------------------------------------------------------------------|
+|`evaluate`       |Prompts for an expression that the LSP should evaluate in the context of the current file. Value can be passed also directly or via visual selection, instead of prompting, and in the latter case can be substituted directly|
 
 ### `idris2.hover` module
 |Function     |Description                                                    |

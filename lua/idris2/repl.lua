@@ -23,7 +23,7 @@ local term_popup_options = {
   },
 }
 
-function M.menu_handler(expression, opts)
+function M.repl_handler(expr, opts)
   local opts = opts or {}
   return function (err, result, ctx, config)
     if err ~= nil then
@@ -31,41 +31,29 @@ function M.menu_handler(expression, opts)
       return
     end
 
+    if opts.sub and opts.visual then
+      local edit = {{
+        range = {
+          ['start'] = { line = opts.s_start[2] - 1, character = opts.s_start[3] - 1 },
+          ['end'] = { line = opts.s_end[2] - 1, character = opts.s_end[3] },
+        },
+        newText = result,
+      }}
+      vim.lsp.util.apply_text_edits(edit, 0, 'utf-32')
+      return
+    end
+
     if opts.virtual then
-      print(vim.inspect(opts))
       local ns = vim.api.nvim_create_namespace('nvim-lsp-virtual-hl')
       vim.api.nvim_buf_set_extmark(opts.s_start[1], ns, opts.s_start[2] - 1, opts.s_start[3] - 1, {
         id = 1,
-        virt_text = {{ '> ' .. expression .. ' => ' .. result, 'Comment'}},
+        virt_text = {{ '> ' .. expr .. ' => ' .. result, 'Comment'}},
         virt_text_pos = 'eol',
       })
-    else
-      vim.notify(result, vim.log.levels.INFO)
+      return
     end
-  end
-end
 
-function M.evaluate(opts)
-  local opts = opts or {}
-  if opts.expr ~= nil then
-    local params = {
-      command = 'repl',
-      arguments = { opts.expr },
-    }
-    vim.lsp.buf_request(0, 'workspace/executeCommand', params, M.menu_handler(opts.expr, opts))
-  else
-    local input = Input(term_popup_options, {
-      prompt = '> ',
-      default_value = '',
-      on_submit = function(value)
-        local params = {
-          command = 'repl',
-          arguments = { value },
-        }
-        vim.lsp.buf_request(0, 'workspace/executeCommand', params, M.menu_handler(value, opts))
-      end,
-    })
-    input:mount()
+    vim.notify(result, vim.log.levels.INFO)
   end
 end
 
@@ -74,6 +62,7 @@ local function get_visual_selection()
   local s_end = vim.fn.getpos("'>")
   local n_lines = math.abs(s_end[2] - s_start[2]) + 1
   local lines = vim.api.nvim_buf_get_lines(0, s_start[2] - 1, s_end[2], false)
+
   if vim.tbl_isempty(lines) then
     return nil, nil, nil
   end
@@ -86,18 +75,45 @@ local function get_visual_selection()
   return s_start, s_end, table.concat(lines, '\n')
 end
 
-function M.visual_evaluate(opts)
-  local s_start, s_end, sel = get_visual_selection()
-  local opts = vim.tbl_deep_extend('force', { s_start = s_start, s_end = s_end }, opts or {})
-  if sel ~= nil and sel ~= '' then
+function M.evaluate(opts)
+  local opts = opts or {}
+
+  if opts.expr ~= nil and opts.expr ~= '' then
     local params = {
       command = 'repl',
-      arguments = { sel }
+      arguments = { opts.expr },
     }
-    vim.lsp.buf_request(0, 'workspace/executeCommand', params, M.menu_handler(sel, opts))
-  else
-    vim.notify('Nothing selected to evaluate', vim.log.levels.ERROR)
+    vim.lsp.buf_request(0, 'workspace/executeCommand', params, M.repl_handler(opts.expr, opts))
+    return
   end
+
+  if opts.visual then
+    local s_start, s_end, sel = get_visual_selection()
+    local opts = vim.tbl_deep_extend('force', { s_start = s_start, s_end = s_end }, opts or {})
+    if sel ~= nil and sel ~= '' then
+      local params = {
+        command = 'repl',
+        arguments = { sel }
+      }
+      vim.lsp.buf_request(0, 'workspace/executeCommand', params, M.repl_handler(sel, opts))
+    else
+      vim.notify('Nothing selected to evaluate', vim.log.levels.ERROR)
+    end
+    return
+  end
+
+  local input = Input(term_popup_options, {
+    prompt = '> ',
+    default_value = '',
+    on_submit = function(value)
+      local params = {
+        command = 'repl',
+        arguments = { value },
+      }
+      vim.lsp.buf_request(0, 'workspace/executeCommand', params, M.repl_handler(value, opts))
+    end,
+  })
+  input:mount()
 end
 
 return M
