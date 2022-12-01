@@ -53,11 +53,11 @@ local function setup_lsp()
   -- the function that adds files to the attached LSP instance, so that it
   -- doesn't add Idris2 files in the installation prefix (idris2 --prefix)
   local old_try_add = nvim_lsp.idris2_lsp.manager.try_add
-  local res = vim.split(vim.fn.system({ 'idris2', '--prefix' }), '\n')[1]
+  local flag, res = pcall(function() return vim.split(vim.fn.system({ 'idris2', '--prefix' }), '\n')[1] end)
   nvim_lsp.idris2_lsp.manager.try_add = function(bufnr)
     bufnr = bufnr or vim.api.nvim_get_current_buf()
     local path = vim.api.nvim_buf_get_name(bufnr)
-    if not vim.startswith(path, res) then
+    if not flag or not vim.startswith(path, res) then
       old_try_add(bufnr)
     end
   end
