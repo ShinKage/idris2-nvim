@@ -3,6 +3,25 @@ local M = {}
 local Menu = require('nui.menu')
 local event = require('nui.utils.autocmd').event
 
+local type_popup_opts = {
+  relative = "cursor",
+  position = {
+    row = 2,
+    col = 0,
+  },
+  border = {
+    style = "rounded",
+    highlight = "FloatBorder",
+    text = {
+      top = "Types",
+      top_align = "left",
+    },
+  },
+  win_options = {
+    winhighlight = "Normal:Normal",
+  },
+}
+
 local popup_options = {
   relative = 'win',
   position = {
@@ -75,6 +94,81 @@ function M.jump_handler(backward)
   end
 end
 
+function M.type_handler(opts)
+  local opts = opts or { popup = true }
+
+  return function (err, result, ctx, config)
+    if err ~= nil then
+      vim.notify(err, vim.log.levels.ERROR)
+      return
+    end
+
+    if vim.tbl_isempty(result) then
+      vim.notify('No metavariables in context', vim.log.levels.INFO)
+      return
+    end
+
+    --Metavariable under the cursor
+    local value = (function ()
+      local curpos = vim.fn.getcurpos();
+      for _, v in pairs(result) do
+        if
+          v.location.range.start.line == curpos[2]-1 and
+          v.location.range.start.character < curpos[3] and
+          v.location.range["end"].character >= curpos[3]
+        then
+          return v;
+        end
+      end
+
+      return nil
+    end)();
+
+    if value == nil then
+      vim.notify('No metavariables under the cursor', vim.log.levels.INFO)
+      return
+    end
+
+    local items = vim.tbl_map(function (x)
+      return ' ' .. x.name .. ' : ' .. x.type
+    end, value.premises)
+
+    local formatted = value.name .. ' : ' .. value.type
+
+    -- Get longest menu item to format the seperator line
+    local longest = 0
+    for _, v in pairs(vim.tbl_map(function (v) return string.len(v) end, vim.tbl_flatten({items, {formatted}}))) do
+      if v > longest then longest = v end
+    end
+
+    table.insert(items, string.rep('-', longest))
+    table.insert(items, formatted)
+
+    items = vim.tbl_map(function (x)
+      return Menu.item(x)
+    end, items)
+
+    local menu = Menu(type_popup_opts, {
+      lines = items,
+      max_width = 100,
+      separator = {
+        char = '-',
+        text_align = 'right',
+      },
+      keymap = {
+        focus_next = { 'j', '<Down>', '<Tab>' },
+        focus_prev = { 'k', '<Up>', '<S-Tab>' },
+        close = { 'q', '<Esc>', '<C-c>', '<CR>', '<Space>' },
+      },
+    })
+
+    menu:mount()
+    if opts.popup then
+      menu:on(event.BufLeave, menu.menu_props.on_close, { once = true })
+    end
+  end
+end
+
 function M.menu_handler(opts)
   local opts = opts or {}
   return function (err, result, ctx, config)
@@ -119,6 +213,10 @@ function M.menu_handler(opts)
       menu:on(event.BufLeave, menu.menu_props.on_close, { once = true })
     end
   end
+end
+
+function M.type_check(opts)
+  vim.lsp.buf_request(0, 'workspace/executeCommand', { command = 'metavars' }, M.type_handler(opts))
 end
 
 function M.request_all(opts)
