@@ -143,11 +143,12 @@ vim.cmd [[nnoremap <Leader>cs <Cmd>lua require('idris2.code_action').case_split(
 |`stop`   |Stop automatic requests of semantic groups on save     |
 
 ### `idris2.metavars` module
-|Function     |Description                                             |
-|-------------|--------------------------------------------------------|
-|`request_all`|Open a popup with all the metavars and jump on selection|
-|`goto_next`  |Jumps to the next metavar in the buffer                 |
-|`goto_prev`  |Jumps to the previous metavar in the buffer             |
+|Function     |Description                                                                                  |
+|-------------|---------------------------------------------------------------------------------------------|
+|`request_all`|Open a popup with all the metavars and jump on selection                                     |
+|`type_check` |Open a popup with the type of the metavar under the cursor, and the types of all related vars|
+|`goto_next`  |Jumps to the next metavar in the buffer                                                      |
+|`goto_prev`  |Jumps to the previous metavar in the buffer                                                  |
 
 ### `idris2.browse` module
 |Function     |Description                                                                          |
