@@ -159,20 +159,6 @@ function M.expr_search_hints()
 end
 
 function M.setup()
-  local custom_handler = plugin_config.options.code_action_post_hook
-  if custom_handler == nil then
-    return
-  end
-  local ui_select = vim.ui.select
-  vim.ui.select = function(action_tuples, opts, on_user_choice)
-    local function on_choice(action_tuple)
-      on_user_choice(action_tuple)
-      if opts.kind == 'codeaction' and action_tuple ~= nil then
-        custom_handler(action_tuple[2])
-      end
-    end
-    ui_select(action_tuples, opts, on_choice)
-  end
 end
 
 return M
