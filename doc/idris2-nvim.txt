@@ -151,6 +151,17 @@ server. The default options are: >
     popup = false, -- Closes the menu when out of focus
   }
 
+type_check({opts})                                idris2.metavars.type_check()
+type_check tries to create a popup containing:
+1. The names and types of the premises
+2. A seperator line
+3. The name and type of the metavariable the cursor is over
+
+The default options are:
+  {
+    popup = true, -- Closes the menu when out of focus
+  }
+
 goto_next()                                       *idris2.metavars.goto_next()*
 `goto_next` tries to jump to the next metavar in the current buffer, cycling
 back to the start if the cursor is after the last metavar.
